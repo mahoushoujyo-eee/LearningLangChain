@@ -14,6 +14,8 @@ mcp_server = {
     }
 }
 
+tool_list = []
+
     # "amap": {
     #     "transport": "sse",
     #     "url": "https://api.qnaigc.com/v1/mcp/sse/0ff8223a9cd74d10a1c6c4508a1378ee",
@@ -27,14 +29,13 @@ mcp_server = {
 
 # 异步获取 MCP 工具并合并到现有工具列表
 async def get_all_tools():
-    # 现有工具
-    tools = []
-    
     # MCP 工具
     try:
         client = MultiServerMCPClient(mcp_server)
         mcp_tools = await client.get_tools() 
-        return tools + mcp_tools
+        tool_list.extend(mcp_tools)
+        log.info(f"MCP 工具获取成功，数量: {len(tool_list)}")
+        return tool_list
     except Exception as e:
         log.info(f"MCP 工具获取失败，使用本地工具: {e}")
-        return tools
+        return tool_list

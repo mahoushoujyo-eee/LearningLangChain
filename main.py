@@ -5,6 +5,7 @@ from api.chat import router as chat_router
 import config.my_nacos as nacos
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 import logging, coloredlogs
+from ai.model import initialize_agent
 
 #1. 日志配置
 logging.basicConfig(
@@ -29,6 +30,8 @@ async def lifespan(app: FastAPI):
     service_name = "langchain-service"
     group = "DEFAULT_GROUP"
     client = nacos.register_service(service_name, server_addresses, port, group)
+
+    await initialize_agent()
 
     # 创建心跳调度器
     sched = AsyncIOScheduler(timezone="Asia/Shanghai")
