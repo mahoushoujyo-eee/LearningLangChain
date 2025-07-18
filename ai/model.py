@@ -10,7 +10,7 @@ from operator import itemgetter
 from ai.mcp import tool_list, get_all_tools
 from config.logger import logger as log
 from .async_history import AsyncSQLChatMessageHistory
-import os
+from ai.rag import rag_tool
 
 
 # ------------- 工具示例 -------------
@@ -30,7 +30,7 @@ def calculator(expression: str) -> str:
         return f"计算错误: {str(e)}"
 
 # 基础工具列表
-base_tools = [weather, calculator]
+base_tools = [weather, calculator, rag_tool]
 
 
 
