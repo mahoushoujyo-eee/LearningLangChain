@@ -54,7 +54,7 @@ trimmer = trim_messages(
 
 # ------------- 提示模板 -------------
 prompt = ChatPromptTemplate.from_messages([
-    ("system", "你是一个友好的 AI 助手，记住用户说过的话，必要时可调用工具。"),
+    ("system", "你是一个友好的 AI 助手，记住用户说过的话，必要时可调用工具。当你使用工具获得结果后，请基于工具的结果给用户一个完整、友好的回复。"),
     MessagesPlaceholder(variable_name="chat_history"),
     ("user", "{input}"),
     MessagesPlaceholder(variable_name="agent_scratchpad")
@@ -67,7 +67,8 @@ agent_executor = AgentExecutor(
     tools=tools,
     verbose=True,               # 控制台打印 ReAct 过程
     max_iterations=5,
-    handle_parsing_errors=True
+    handle_parsing_errors=True,
+    return_intermediate_steps=False  # 确保返回最终结果
 )
 
 # 添加调试函数来打印消息
