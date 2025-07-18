@@ -2,11 +2,12 @@ from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import Prompt, ChatPromptTemplate, HumanMessagePromptTemplate
 from config.logger import logger as log
-from ai.model import chain_with_history
+from ai.model import get_agent
 
-def chat(content:str):
+async def chat(content:str):
     session_id = "alice2"
-    for chunk in chain_with_history.stream({"input": content},
+    chain_with_history = get_agent()
+    async for chunk in chain_with_history.astream({"input": content},
         config={"configurable": {"session_id": session_id}}):
         # Agent 返回的是字典格式，需要处理不同的数据结构
         if isinstance(chunk, dict):
