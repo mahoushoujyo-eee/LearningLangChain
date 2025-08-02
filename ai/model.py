@@ -1,5 +1,6 @@
 from langchain_openai import ChatOpenAI
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain_core.runnables.history import RunnableWithMessageHistory
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import trim_messages
@@ -32,8 +33,6 @@ def calculator(expression: str) -> str:
 # 基础工具列表
 base_tools = [weather, calculator, rag_tool]
 
-
-
 # 全局变量存储所有工具
 tools = base_tools.copy()
 llm_with_tools = None
@@ -42,17 +41,17 @@ agent_executor = None
 enhanced_agent = None
 chain_with_history = None
 
-llm = ChatGoogleGenerativeAI(
-    model="gemini-2.5-flash-lite-preview-06-17",
-    google_api_key="AIzaSyCpTrnTei0clJ92vH4V6wJm03xaL_BBGs0",
-)
-#-lite-preview-06-17"
-# llm = ChatOpenAI(
-#     temperature=0.1,
-#     model_name="deepseek-r1-0528", 
-#     openai_api_base="https://api.qnaigc.com/v1", # 例如，您可以指定base_url
-#     openai_api_key="sk-d1485a93f87c3c0add520ca9a97d507cb810537de27ac5d9a72f2b6ba4651a0d", # 直接在此处设置API密钥，或者通过环境变量设置
+# llm = ChatGoogleGenerativeAI(
+#     model="gemini-2.5-flash-lite-preview-06-17",
+#     google_api_key="AIzaSyCpTrnTei0clJ92vH4V6wJm03xaL_BBGs0",
 # )
+#-lite-preview-06-17"
+llm = ChatOpenAI(
+    temperature=0.1,
+    model_name="deepseek-v3-0324", 
+    openai_api_base="https://api.qnaigc.com/v1", # 例如，您可以指定base_url
+    openai_api_key="sk-d1485a93f87c3c0add520ca9a97d507cb810537de27ac5d9a72f2b6ba4651a0d", # 直接在此处设置API密钥，或者通过环境变量设置
+)
 
 # 创建消息修剪器 - 使用消息数量限制更安全
 trimmer = trim_messages(

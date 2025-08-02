@@ -6,7 +6,7 @@ router = APIRouter(prefix="/ai", tags=["ai"])
 
 @router.get('/chat/{content}')
 async def chat(content):
-    session_id = "alice3"
+    session_id = "alice5"
     try:
         return StreamingResponse(
             ai.chat(content, session_id),
